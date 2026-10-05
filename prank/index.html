@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع مستفز جداً 🤬</title>
+    <style>
+        body {
+            background-color: #18181b;
+            color: #f43f5e;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #statusMsg {
+            color: #fbbf24;
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        /* زرار مستفز بيجري */
+        #angryBtn {
+            background: linear-gradient(135deg, #f43f5e, #e11d48);
+            color: #ffffff;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4);
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.12s ease-out;
+        }
+
+        .counter {
+            position: absolute;
+            bottom: 20px;
+            color: #71717a;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>تحذير: هذا الموقع الذكي يرفض إعجابك! 😤</h1>
+    <p id="statusMsg">تحدى نفسك واضغط على الزرار لو تجرأت...</p>
+
+    <button id="angryBtn">اضغط هنا (لو تقدر!)</button>
+
+    <div class="counter">عدد مرات الفشل: <span id="failCount">0</span></div>
+
+    <script>
+        const btn = document.getElementById('angryBtn');
+        const statusMsg = document.getElementById('statusMsg');
+        const failCountSpan = document.getElementById('failCount');
+        
+        let fails = 0;
+        const messages = [
+            "هههههه بعيييد! 😜",
+            "أنت بطيء قوي يا صاحبي! 🐢",
+            "حاول تاني كده بتركيز؟ 🧐",
+            "يا عم تعبت؟ استريح! ☕",
+            "المستر لو شافك هتتحرّق من الضحك! 😂",
+            "مستحيل تقبض عليا! 🏃‍♂️💨"
+        ];
+
+        function runAway(e) {
+            if(e) e.preventDefault();
+            
+            fails++;
+            failCountSpan.innerText = fails;
+
+            // تغيير الرسالة الاستفزازية عشوائياً
+            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+            statusMsg.innerText = randomMsg;
+
+            // حساب أبعاد جديدة جوه الشاشة
+            const padding = 40;
+            const maxX = window.innerWidth - btn.offsetWidth - padding;
+            const maxY = window.innerHeight - btn.offsetHeight - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(180, Math.floor(Math.random() * maxY));
+
+            btn.style.transform = 'none';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        btn.addEventListener('click', runAway);
+        btn.addEventListener('touchstart', runAway);
+    </script>
+
+</body>
+</html>
