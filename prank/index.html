@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موقع مستفز جداً 🤬</title>
+    <title>لعبة حجر، ورقة، مقص 🎮</title>
     <style>
         body {
-            background-color: #18181b;
-            color: #f43f5e;
+            background-color: #0f172a;
+            color: #f8fafc;
             font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
@@ -15,98 +15,105 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden;
             text-align: center;
-            position: relative;
         }
 
         h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
+            color: #38bdf8;
+            margin-bottom: 20px;
         }
 
-        #statusMsg {
-            color: #fbbf24;
+        .score-board {
+            display: flex;
+            gap: 30px;
             font-size: 18px;
             margin-bottom: 30px;
-            font-weight: bold;
+            background: #1e293b;
+            padding: 10px 20px;
+            border-radius: 10px;
         }
 
-        /* زرار مستفز بيجري */
-        #angryBtn {
-            background: linear-gradient(135deg, #f43f5e, #e11d48);
-            color: #ffffff;
+        .choices {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .choice-btn {
+            background: #334155;
+            color: white;
             border: none;
-            padding: 16px 32px;
+            padding: 15px 25px;
             border-radius: 12px;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4);
-            position: absolute;
-            top: 55%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.12s ease-out;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .counter {
-            position: absolute;
-            bottom: 20px;
-            color: #71717a;
-            font-size: 14px;
+        .choice-btn:hover {
+            background: #38bdf8;
+            transform: scale(1.1);
+        }
+
+        #resultArea {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            min-height: 60px;
         }
     </style>
 </head>
 <body>
 
-    <h1>تحذير: هذا الموقع الذكي يرفض إعجابك! 😤</h1>
-    <p id="statusMsg">تحدى نفسك واضغط على الزرار لو تجرأت...</p>
+    <h1>لعبة حجر، ورقة، مقص ✊✌️✋</h1>
 
-    <button id="angryBtn">اضغط هنا (لو تقدر!)</button>
+    <div class="score-board">
+        <div>نقاطك: <span id="playerScore">0</span></div>
+        <div>نقاط الكمبيوتر: <span id="computerScore">0</span></div>
+    </div>
 
-    <div class="counter">عدد مرات الفشل: <span id="failCount">0</span></div>
+    <p>اختر حركتك:</p>
+    <div class="choices">
+        <button class="choice-btn" onclick="play('حجر')">✊ حجر</button>
+        <button class="choice-btn" onclick="play('ورقة')">✋ ورقة</button>
+        <button class="choice-btn" onclick="play('مقص')">✌️ مقص</button>
+    </div>
+
+    <div id="resultArea">استعد للعب...</div>
 
     <script>
-        const btn = document.getElementById('angryBtn');
-        const statusMsg = document.getElementById('statusMsg');
-        const failCountSpan = document.getElementById('failCount');
-        
-        let fails = 0;
-        const messages = [
-            "هههههه بعيييد! 😜",
-            "أنت بطيء قوي يا صاحبي! 🐢",
-            "حاول تاني كده بتركيز؟ 🧐",
-            "يا عم تعبت؟ استريح! ☕",
-            "المستر لو شافك هتتحرّق من الضحك! 😂",
-            "مستحيل تقبض عليا! 🏃‍♂️💨"
-        ];
+        let pScore = 0;
+        let cScore = 0;
 
-        function runAway(e) {
-            if(e) e.preventDefault();
-            
-            fails++;
-            failCountSpan.innerText = fails;
+        function play(playerChoice) {
+            const options = ['حجر', 'ورقة', 'مقص'];
+            const computerChoice = options[Math.floor(Math.random() * 3)];
 
-            // تغيير الرسالة الاستفزازية عشوائياً
-            const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-            statusMsg.innerText = randomMsg;
+            const resultArea = document.getElementById('resultArea');
+            let roundResult = "";
 
-            // حساب أبعاد جديدة جوه الشاشة
-            const padding = 40;
-            const maxX = window.innerWidth - btn.offsetWidth - padding;
-            const maxY = window.innerHeight - btn.offsetHeight - padding;
+            if (playerChoice === computerChoice) {
+                roundResult = `تعادل! 🤝 الاتنين اخترتوا (${playerChoice})`;
+                resultArea.style.color = "#fbbf24";
+            } else if (
+                (playerChoice === 'حجر' && computerChoice === 'مقص') ||
+                (playerChoice === 'ورقة' && computerChoice === 'حجر') ||
+                (playerChoice === 'مقص' && computerChoice === 'ورقة')
+            ) {
+                roundResult = `كسبت الجولة! 🎉 أنت (${playerChoice}) والكمبيوتر (${computerChoice})`;
+                pScore++;
+                resultArea.style.color = "#4ade80";
+            } else {
+                roundResult = `خسرت الجولة! 😢 أنت (${playerChoice}) والكمبيوتر (${computerChoice})`;
+                cScore++;
+                resultArea.style.color = "#f43f5e";
+            }
 
-            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(180, Math.floor(Math.random() * maxY));
-
-            btn.style.transform = 'none';
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
+            document.getElementById('playerScore').innerText = pScore;
+            document.getElementById('computerScore').innerText = cScore;
+            resultArea.innerHTML = roundResult;
         }
-
-        btn.addEventListener('click', runAway);
-        btn.addEventListener('touchstart', runAway);
     </script>
 
 </body>
