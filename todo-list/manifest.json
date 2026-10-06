@@ -1,0 +1,11 @@
+{
+  "background_color": "#1b688a",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Todo List",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Todo List",
+  "start_url": "./",
+  "theme_color": "#5c74ef"
+}
