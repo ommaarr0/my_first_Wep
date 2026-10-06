@@ -1,11 +1,12 @@
 {
-  "background_color": "#1b688a",
-  "dir": "ltr",
-  "display": "standalone",
-  "name": "Todo List",
-  "orientation": "any",
-  "scope": "/",
+  "name": "Todo List App",
   "short_name": "Todo List",
+  "description": "A simple and efficient To-Do List application to manage daily tasks.",
   "start_url": "./",
-  "theme_color": "#5c74ef"
+  "display": "standalone",
+  "background_color": "#1b688a",
+  "theme_color": "#5c74ef",
+  "orientation": "any",
+  "dir": "ltr",
+  "scope": "/"
 }
