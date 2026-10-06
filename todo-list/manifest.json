@@ -10,3 +10,11 @@
   "dir": "ltr",
   "scope": "/"
 }
+
+  "icons": [
+    {
+      "src": "appstore-images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
