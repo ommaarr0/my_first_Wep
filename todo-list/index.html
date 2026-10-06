@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قائمة المهام اليومية 📝</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #1e293b;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #38bdf8;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #334155;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #94a3b8;
+        }
+
+        button {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background: #334155;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .task-text {
+            cursor: pointer;
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .delete-btn {
+            background: #f43f5e;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #e11d48;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>قائمة المهام 📝</h1>
+        
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة...">
+            <button onclick="addTask()">إضافة</button>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('taskInput');
+        const taskList = document.getElementById('taskList');
+
+        // أول ما الصفحة تفتح، نحمل المهام القديمة لو فيه
+        document.addEventListener('DOMContentLoaded', loadTasks);
+
+        function addTask() {
+            const taskText = taskInput.value.trim();
+            if (taskText === "") return;
+
+            createTaskElement(taskText, false);
+            saveTasks();
+            taskInput.value = "";
+        }
+
+        function createTaskElement(text, isCompleted) {
+            const li = document.createElement('li');
+            if (isCompleted) li.classList.add('completed');
+
+            const span = document.createElement('span');
+            span.className = 'task-text';
+            span.innerText = text;
+            
+            // لما تضغط على المهمة تشطب عليها كأنها تمت
+            span.onclick = function() {
+                li.classList.toggle('completed');
+                saveTasks();
+            };
+
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-btn';
+            delBtn.innerText = 'حذف';
+            delBtn.onclick = function() {
+                li.remove();
+                saveTasks();
+            };
+
+            li.appendChild(span);
+            li.appendChild(delBtn);
+            taskList.appendChild(li);
+        }
+
+        // حفظ المهام في ذاكرة المتصفح (LocalStorage) عشان متطيرش
+        function saveTasks() {
+            let tasks = [];
+            document.querySelectorAll('#taskList li').forEach(li => {
+                tasks.text = li.querySelector('.task-text').innerText;
+                tasks.completed = li.classList.contains('completed');
+                tasks.push(taskData);
+            });
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+        }
+
+        function loadTasks() {
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            tasks.forEach(task => {
+                createTaskElement(task.text, task.completed);
+            });
+        }
+    </script>
+
+</body>
+</html>
